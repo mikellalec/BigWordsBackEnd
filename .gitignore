@@ -1,4 +1,4 @@
-flaskr/__pycache__/*
-instance/*
+flaskr/__pycache__/
+instance/
 CONFIG
 vs_config/
