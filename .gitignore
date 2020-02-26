@@ -1,2 +1,4 @@
 flaskr/__pycache__/*
 instance/*
+CONFIG
+vs_config/
