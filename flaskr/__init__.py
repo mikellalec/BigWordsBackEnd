@@ -1,6 +1,10 @@
 import os
+import sqlite3
 
-from flask import Flask
+from flask import Flask, g
+
+# path from root folder to datbase
+DATABASE = 'data/names.db'
 
 def create_app(test_config=None):
     # create and configure the app
@@ -28,4 +32,30 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World! Test'
 
+    @app.route('/servertest')
+    def servertest():
+        return query_db('select name from names')
+
+    @app.teardown_appcontext
+    def close_connection(exception):
+        db = getattr(g, '_database', None)
+        if db is not None:
+            db.close()
+
     return app
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
+
+def query_db(query, args=(), one=False):
+    cur = get_db().execute(query, args)
+    rv = cur.fetchall()
+    cur.close()
+    # format query so it's returnable with basic layout
+    result_string=''
+    for item in rv:
+        result_string+=(item[0]+" ")
+    return result_string
