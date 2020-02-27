@@ -36,3 +36,6 @@ $ export FLASK_APP=flaskr
 $ export FLASK_ENV=development
 $ flask run
 ```
+# Test
+
+ Run the app and navigate to http://localhost:5000/servertest
