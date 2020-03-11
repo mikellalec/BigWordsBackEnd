@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from flask import Flask, g
+from flask import Flask, g, render_template, url_for
 
 # path from root folder to datbase
 DATABASE = 'data/names.db'
@@ -27,6 +27,9 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    @app.route('/')
+    def main():
+        return render_template('index.html'); 
     # a simple page that says hello
     @app.route('/hello')
     def hello():
