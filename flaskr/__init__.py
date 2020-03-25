@@ -1,10 +1,11 @@
 import os
 import sqlite3
 
-from flask import Flask, g, render_template, url_for
+from flask import Flask, g, render_template, url_for, request
 
 # path from root folder to datbase
-DATABASE = 'data/names.db'
+DATABASE = 'data/game.db'
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -27,17 +28,18 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/')
+    @app.route('/', methods=['GET', 'POST'])
     def main():
-        return render_template('index.html'); 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World! Test'
+        if request.method == 'POST':
+            print(request.form['username'])
+            print(request.form['password'])
+            return "success"
+        else:
+            return render_template('index.html')
 
     @app.route('/servertest')
     def servertest():
-        return query_db('select name from names')
+        return query_db('select item from Users')
 
     @app.teardown_appcontext
     def close_connection(exception):
@@ -47,18 +49,20 @@ def create_app(test_config=None):
 
     return app
 
+
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
+
 def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
     cur.close()
     # format query so it's returnable with basic layout
-    result_string=''
+    result_string = ''
     for item in rv:
-        result_string+=(item[0]+" ")
+        result_string += (item[0]+" ")
     return result_string
