@@ -41,6 +41,14 @@ def create_app(test_config=None):
     def servertest():
         return query_db('select item from Users')
 
+    @app.route('/getgameinstructions', methods=['GET'])
+    def getgameinstructions():
+        return "Look at the letters in parentheses.  Add -al or -ial to the letters to complete the sentence.  Remember, sometimes you have to change the spelling of the root before adding -al or -ial.  Use the sample words for help."
+
+    @app.route('/getgameanswer', methods=['GET'])
+    def getgameanswer():
+        return "funniest"
+        
     @app.teardown_appcontext
     def close_connection(exception):
         db = getattr(g, '_database', None)
@@ -48,7 +56,6 @@ def create_app(test_config=None):
             db.close()
 
     return app
-
 
 def get_db():
     db = getattr(g, '_database', None)
