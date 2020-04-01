@@ -1,7 +1,7 @@
 import os
 import sqlite3
-
-from flask import Flask, g, render_template, url_for, request
+from flask import Flask, g, render_template, url_for, request, make_response
+from flask_cors import CORS
 
 # path from root folder to datbase
 DATABASE = 'data/game.db'
@@ -28,6 +28,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    CORS(app)
+
     @app.route('/', methods=['GET', 'POST'])
     def main():
         if request.method == 'POST':
@@ -41,14 +43,14 @@ def create_app(test_config=None):
     def servertest():
         return query_db('select item from Users')
 
-    @app.route('/getgameinstructions', methods=['GET'])
-    def getgameinstructions():
-        return "Look at the letters in parentheses.  Add -al or -ial to the letters to complete the sentence.  Remember, sometimes you have to change the spelling of the root before adding -al or -ial.  Use the sample words for help."
+    @app.route('/getgamequestion', methods=['GET'])
+    def getgamequestion():
+        return "The new comedy was one of the (funny)  movies I have ever seen."
 
     @app.route('/getgameanswer', methods=['GET'])
     def getgameanswer():
         return "funniest"
-        
+
     @app.teardown_appcontext
     def close_connection(exception):
         db = getattr(g, '_database', None)
@@ -56,6 +58,7 @@ def create_app(test_config=None):
             db.close()
 
     return app
+
 
 def get_db():
     db = getattr(g, '_database', None)
