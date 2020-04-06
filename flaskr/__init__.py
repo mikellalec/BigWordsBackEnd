@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from flask import Flask, g, render_template, url_for, request, make_response
+from flask import Flask, g, render_template, url_for, request, make_response, jsonify
 from flask_cors import CORS
 
 # path from root folder to datbase
@@ -43,13 +43,10 @@ def create_app(test_config=None):
     def servertest():
         return query_db('select item from Users')
 
-    @app.route('/getgamequestion', methods=['GET'])
-    def getgamequestion():
-        return "The new comedy was one of the (funny)  movies I have ever seen."
-
-    @app.route('/getgameanswer', methods=['GET'])
-    def getgameanswer():
-        return "funniest"
+    @app.route('/getgame/<id>', methods=['GET'])
+    def getgamequestion(id):
+        result = query_db("SELECT item FROM SpellBinderLessons S WHERE S.id= (?)", [id])
+        return jsonify(result)
 
     @app.teardown_appcontext
     def close_connection(exception):
