@@ -39,15 +39,16 @@ def create_app(test_config=None):
         else:
             return render_template('index.html')
 
-    @app.route('/servertest')
-    def servertest():
-        return query_db('select item from Users')
-
-    @app.route('/getgame/<id>', methods=['GET'])
-    def getgamequestion(id):
+    @app.route('/getSpellBinder/<id>', methods=['GET'])
+    def getSpellBinderQuestions(id):
         result = query_db("SELECT item FROM SpellBinderLessons S WHERE S.id= (?)", [id])
         return jsonify(result)
 
+    @app.route('/getWordBuilder/<id>', methods=['GET'])
+    def getWordBuilderQuestions(id):
+        result = query_db("SELECT item FROM WordBuilderLessons S WHERE S.id= (?)", [id])
+        return jsonify(result)
+    
     @app.teardown_appcontext
     def close_connection(exception):
         db = getattr(g, '_database', None)
