@@ -4,6 +4,8 @@ New backend for BigWords. Flask application with a sqlite database.
 
 # Setup
 
+Create a folder at the root directory called "data" and copy into the folder the Big Words data from the Dropbox: https://www.dropbox.com/sh/oagd0pngqwlimy6/AAAsdGfO2En_w5owPniE7rOta?dl=0
+
 ### Windows (Powershell):
 
 Install dependencies:
