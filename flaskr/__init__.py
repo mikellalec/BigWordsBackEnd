@@ -6,7 +6,6 @@ from flask_cors import CORS
 # path from root folder to datbase
 DATABASE = 'data/game.db'
 
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -39,13 +38,14 @@ def create_app(test_config=None):
         else:
             return render_template('index.html')
 
-    @app.route('/servertest')
-    def servertest():
-        return query_db('select item from Users')
-
-    @app.route('/getgame/<id>', methods=['GET'])
-    def getgamequestion(id):
+    @app.route('/getSpellBinder/<id>', methods=['GET'])
+    def getSpellBinderGame(id):
         result = query_db("SELECT item FROM SpellBinderLessons S WHERE S.id= (?)", [id])
+        return jsonify(result)
+
+    @app.route('/getSortGame/<id>', methods=['GET'])
+    def getSortGame(id):
+        result = query_db("SELECT item FROM SortActivityLessons S where S.id= (?)", [id])
         return jsonify(result)
 
     @app.teardown_appcontext
@@ -56,13 +56,11 @@ def create_app(test_config=None):
 
     return app
 
-
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
     return db
-
 
 def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
