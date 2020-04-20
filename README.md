@@ -40,4 +40,4 @@ $ flask run
 ```
 # Test
 
- Run the app and navigate to http://localhost:5000/servertest
+ Run the app and navigate to http://localhost:5000/

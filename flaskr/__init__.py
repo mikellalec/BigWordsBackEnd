@@ -47,6 +47,11 @@ def create_app(test_config=None):
     def getWordBuilderQuestions(id):
         result = query_db("SELECT item FROM WordBuilderLessons S WHERE S.id= (?)", [id])
         return jsonify(result)
+
+    @app.route('/getSortGame/<id>', methods=['GET'])
+    def getSortGame(id):
+        result = query_db("SELECT item FROM SortActivityLessons S where S.id= (?)", [id])
+        return jsonify(result)
     
     @app.teardown_appcontext
     def close_connection(exception):
