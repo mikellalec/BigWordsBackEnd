@@ -6,7 +6,6 @@ from flask_cors import CORS
 # path from root folder to datbase
 DATABASE = 'data/game.db'
 
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -57,13 +56,11 @@ def create_app(test_config=None):
 
     return app
 
-
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
     return db
-
 
 def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
